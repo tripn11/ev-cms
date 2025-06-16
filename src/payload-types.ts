@@ -207,7 +207,7 @@ export interface Vehicle {
   brand: string | Brand;
   price: number;
   description: string;
-  image?: (string | Media)[] | null;
+  images?: (string | Media)[] | null;
   vehicleType: string | VehicleType;
   updatedAt: string;
   createdAt: string;
@@ -369,7 +369,7 @@ export interface VehiclesSelect<T extends boolean = true> {
   brand?: T;
   price?: T;
   description?: T;
-  image?: T;
+  images?: T;
   vehicleType?: T;
   updatedAt?: T;
   createdAt?: T;

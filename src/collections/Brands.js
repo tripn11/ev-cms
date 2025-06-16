@@ -1,5 +1,8 @@
 export default {
   slug: 'brands',
+  access: {
+    read: () => true,
+  },
   admin: {
     useAsTitle: 'name',
   },

@@ -42,4 +42,5 @@ export default buildConfig({
     payloadCloudPlugin(),
     // storage-adapter-placeholder
   ],
+  cors: ['http://localhost:5173'],
 })

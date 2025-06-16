@@ -3,6 +3,9 @@ export default {
   admin: {
     useAsTitle: 'model',
   },
+  access: {
+    read:() => true,
+  },
   fields: [
     {
       name: 'model',
@@ -12,7 +15,7 @@ export default {
     {
       name: 'year',
       type: 'select',
-      label: 'Year of Model',
+      label: 'Year',
       required: true,
       options: Array.from(
         { length: new Date().getFullYear() + 2 - 2018 },
@@ -40,7 +43,7 @@ export default {
       required: true,
     },
     {
-      name: 'image',
+      name: 'images',
       type: 'upload',
       relationTo: 'media',
       hasMany: true,
