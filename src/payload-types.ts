@@ -209,6 +209,19 @@ export interface Vehicle {
   description: string;
   images?: (string | Media)[] | null;
   vehicleType: string | VehicleType;
+  overview?: {
+    fuel_type?: ('electric' | 'hybrid') | null;
+    body_style?: ('sedan' | 'suv' | 'hatchback' | 'coupe' | 'convertible' | 'truck' | 'van' | 'wagon') | null;
+    'dimensions(mm)'?: string | null;
+    condition?: ('new' | 'foreign-used' | 'nigerian-used') | null;
+    seats?: number | null;
+    'power_output(hp)'?: number | null;
+    'battery_capacity(kwh)'?: number | null;
+    'range(km)'?: number | null;
+    drivetrain?: ('FWD' | 'RWD' | 'AWD' | '4WD') | null;
+    'top_speed(km/h)'?: number | null;
+    'acceleration(0-100)s'?: number | null;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -371,6 +384,21 @@ export interface VehiclesSelect<T extends boolean = true> {
   description?: T;
   images?: T;
   vehicleType?: T;
+  overview?:
+    | T
+    | {
+        fuel_type?: T;
+        body_style?: T;
+        'dimensions(mm)'?: T;
+        condition?: T;
+        seats?: T;
+        'power_output(hp)'?: T;
+        'battery_capacity(kwh)'?: T;
+        'range(km)'?: T;
+        drivetrain?: T;
+        'top_speed(km/h)'?: T;
+        'acceleration(0-100)s'?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }

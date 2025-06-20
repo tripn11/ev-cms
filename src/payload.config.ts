@@ -12,6 +12,7 @@ import VehicleTypes  from './collections/VehicleTypes.js'
 import Brands from './collections/Brands.js'
 import Vehicles from './collections/Vehicles.js'
 import LogoutNavLink from './components/LogoutNavLink.jsx'
+import CompanyLogo from './components/CompanyLogo.jsx'
 
 
 const filename = fileURLToPath(import.meta.url)
@@ -20,11 +21,15 @@ const dirname = path.dirname(filename)
 export default buildConfig({
   admin: {
     user: Users.slug,
+    logo: CompanyLogo, 
     importMap: {
       baseDir: path.resolve(dirname),
     },
     components: {
       afterNavLinks: [LogoutNavLink],
+    },
+    meta: {
+      titleSuffix: ' | Enerplaz EVs',
     },
   },
 
