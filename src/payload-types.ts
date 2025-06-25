@@ -203,18 +203,24 @@ export interface Brand {
 export interface Vehicle {
   id: string;
   model: string;
-  year: '2026' | '2025' | '2024' | '2023' | '2022' | '2021' | '2020' | '2019' | '2018';
+  year: '2026' | '2025' | '2024' | '2023' | '2022' | '2021' | '2020' | '2019' | '2018' | '2017' | '2016' | '2015';
   brand: string | Brand;
   price: number;
-  description: string;
   images?: (string | Media)[] | null;
-  vehicleType: string | VehicleType;
+  vehicle_type: string | VehicleType;
   overview?: {
     fuel_type?: ('electric' | 'hybrid') | null;
     body_style?: ('sedan' | 'suv' | 'hatchback' | 'coupe' | 'convertible' | 'truck' | 'van' | 'wagon') | null;
     'dimensions(mm)'?: string | null;
     condition?: ('new' | 'foreign-used' | 'nigerian-used') | null;
     seats?: number | null;
+    seat_technology?: string | null;
+    sound_system?: string | null;
+    ambiance?: string | null;
+    charging_speed?: string | null;
+    bidirectional_charging?: string | null;
+    safety?: string | null;
+    assistance?: string | null;
     'power_output(hp)'?: number | null;
     'battery_capacity(kwh)'?: number | null;
     'range(km)'?: number | null;
@@ -381,9 +387,8 @@ export interface VehiclesSelect<T extends boolean = true> {
   year?: T;
   brand?: T;
   price?: T;
-  description?: T;
   images?: T;
-  vehicleType?: T;
+  vehicle_type?: T;
   overview?:
     | T
     | {
@@ -392,6 +397,13 @@ export interface VehiclesSelect<T extends boolean = true> {
         'dimensions(mm)'?: T;
         condition?: T;
         seats?: T;
+        seat_technology?: T;
+        sound_system?: T;
+        ambiance?: T;
+        charging_speed?: T;
+        bidirectional_charging?: T;
+        safety?: T;
+        assistance?: T;
         'power_output(hp)'?: T;
         'battery_capacity(kwh)'?: T;
         'range(km)'?: T;

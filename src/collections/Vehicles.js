@@ -18,7 +18,7 @@ export default {
       label: 'Year',
       required: true,
       options: Array.from(
-        { length: new Date().getFullYear() + 2 - 2018 },
+        { length: new Date().getFullYear() + 2 - 2015 },
         (_, i) => {
           const year = new Date().getFullYear() + 1 - i;
           return { label: year.toString(), value: year.toString() }; // value as string
@@ -38,18 +38,13 @@ export default {
       min: 1000,
     },
     {
-      name: 'description',
-      type: 'textarea',
-      required: true,
-    },
-    {
       name: 'images',
       type: 'upload',
       relationTo: 'media',
       hasMany: true,
     },
     {
-      name: 'vehicleType',
+      name: 'vehicle_type',
       type: 'relationship',
       relationTo: 'vehicle-types',
       required: true,
@@ -105,6 +100,41 @@ export default {
           label: 'Seating Capacity',
           min: 1,
           max: 20,
+        },
+        {
+          name:"seat_technology",
+          type: 'text',
+          label: 'Seat Technology'
+        },
+        {
+          name:'sound_system',
+          type:'text',
+          label:'Sound System'
+        },
+        {
+          name:'ambiance',
+          type:'text',
+          label:'Ambiance'
+        },
+        {
+          name:'charging_speed',
+          type:'text',
+          label:"Charging speed"
+        },
+        {
+          name:'bidirectional_charging',
+          type: 'text',
+          label: "Bidirectional Charging"
+        },
+        {
+          name:"safety",
+          type:"text",
+          label:"Safety"
+        },
+        {
+          name:"assistance",
+          type:"text",
+          label:"Assistance"
         },
         {
           name: 'power_output(hp)',
