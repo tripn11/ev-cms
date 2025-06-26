@@ -1,28 +1,20 @@
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { payloadCloudPlugin } from '@payloadcms/payload-cloud'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
-import path from 'path'
 import { buildConfig } from 'payload'
-import { fileURLToPath } from 'url'
 import sharp from 'sharp'
-import  Users  from './collections/Users.js'
-import  Media  from './collections/Media.js'
-import VehicleTypes  from './collections/VehicleTypes.js'
+import Users from './collections/Users.js'
+import Media from './collections/Media.js'
+import VehicleTypes from './collections/VehicleTypes.js'
 import Brands from './collections/Brands.js'
 import Vehicles from './collections/Vehicles.js'
 import LogoutNavLink from './components/LogoutNavLink.jsx'
 
 
-const filename = fileURLToPath(import.meta.url)
-const dirname = path.dirname(filename)
-
 export default buildConfig({
   serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL || 'http://localhost:3000',
   admin: {
     user: Users.slug,
-    importMap: {
-      baseDir: path.resolve(dirname),
-    },
     components: {
       afterNavLinks: [LogoutNavLink],
     },
@@ -35,7 +27,7 @@ export default buildConfig({
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
-    outputFile: path.resolve(dirname, 'payload-types.ts'),
+    outputFile: 'src/payload-types.ts',
   },
   db: mongooseAdapter({
     url: process.env.DATABASE_URI || '',
@@ -44,5 +36,7 @@ export default buildConfig({
   plugins: [
     payloadCloudPlugin(),
   ],
-  cors: ['http://localhost:5173'],
+  cors: [
+    'http://localhost:5173'
+  ],
 })
