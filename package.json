@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts NODE_ENV=development next dev",
-    "build": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts next build",
+    "build": "echo \"PAYLOAD_CONFIG_PATH during build: $PAYLOAD_CONFIG_PATH\" && next build",
     "start": "cross-env PAYLOAD_CONFIG_PATH=dist/payload.config.js NODE_ENV=production next start",
     "seed": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts ts-node src/seed.ts",
     "generate:types": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts payload generate:types",
