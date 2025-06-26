@@ -1,3 +1,5 @@
+/** @type {import('payload/types').CollectionConfig} */
+
 export default {
   slug: 'users',
   auth: true,
@@ -16,7 +18,7 @@ export default {
       ],
       access: {
         update: ({ req }) => req.user?.role === 'Dev',
-      }
+      },
     },
     {
       name: 'firstName',
@@ -27,7 +29,15 @@ export default {
   access: {
     create: ({ req }) => req.user?.role === 'Dev',
     read: () => true,
-    delete: ({ req, id }) => req.user?.role === 'Dev' || req.user?.id === id,
-    update: ({ req, id }) => req.user?.role === 'Dev' || req.user?.id === id,
+    delete: (args) => {
+      const { req, id } = args;
+      return req.user?.role === 'Dev' || req.user?.id === id;
+    },
+
+    update: (args) => {
+      const { req, id } = args;
+      return req.user?.role === 'Dev' || req.user?.id === id;
+    },
+
   },
 };

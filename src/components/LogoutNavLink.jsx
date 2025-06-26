@@ -1,6 +1,7 @@
-'use client'
+'use client';
 import React from 'react';
 
+/** @type {import('payload/types').CustomComponent} */
 const LogoutNavLink = () => {
   return (
     <div style={{ padding: '1rem' }}>
