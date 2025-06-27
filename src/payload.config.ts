@@ -33,6 +33,6 @@ export default buildConfig({
     payloadCloudPlugin(),
   ],
   cors: [
-    'http://localhost:5173'
+    'https://enerplazevs.com/'
   ],
 })
