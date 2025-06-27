@@ -8,16 +8,12 @@ import Media from './collections/Media.js'
 import VehicleTypes from './collections/VehicleTypes.js'
 import Brands from './collections/Brands.js'
 import Vehicles from './collections/Vehicles.js'
-import LogoutNavLink from './components/LogoutNavLink.jsx'
 
 
 export default buildConfig({
   serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL || 'http://localhost:3000',
   admin: {
     user: Users.slug,
-    components: {
-      afterNavLinks: [LogoutNavLink],
-    },
     meta: {
       titleSuffix: ' | Enerplaz EVs',
     },
