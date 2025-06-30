@@ -1,4 +1,4 @@
-import cloudinaryAdapter from '../adapters/cloudinaryAdapter';
+import cloudinaryAdapter from '../plugins/cloudinaryAdapter';
 import { v2 as cloudinary } from 'cloudinary';
 
 export default {
