@@ -1,4 +1,5 @@
 import { v2 as cloudinary } from 'cloudinary';
+import cloudinaryAdapter from '../adapters/cloudinaryAdapter.js'; // adjust path
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -11,7 +12,7 @@ export default {
   slug: 'media',
   upload: {
     mimeTypes: ['image/*', 'video/*', 'application/pdf'],
-    disableLocalStorage: true, // ✅ disables /api/media/file/*
+    adapter: cloudinaryAdapter({ prefix: 'payload-uploads' }), // ✅ KEY LINE
   },
   access: {
     read: () => true,
@@ -20,11 +21,7 @@ export default {
     {
       name: 'cloudinary_public_id',
       type: 'text',
-      required: false,
-      admin: {
-        readOnly: true,
-        position: 'sidebar',
-      },
+      admin: { readOnly: true, position: 'sidebar' },
     },
     {
       name: 'url',
@@ -42,4 +39,35 @@ export default {
       required: true,
     },
   ],
+  hooks: {
+    afterRead: [
+      async ({ doc }) => {
+        const publicId = doc.cloudinary_public_id || doc.filename;
+        if (!publicId) return doc;
+
+        const isVideo = doc.mimeType?.startsWith('video');
+        const resourceType = isVideo ? 'video' : 'image';
+
+        doc.url = cloudinary.url(publicId, {
+          resource_type: resourceType,
+          secure: true,
+        });
+
+        if (!isVideo) {
+          doc.thumbnailURL = cloudinary.url(publicId, {
+            resource_type: 'image',
+            width: 200,
+            height: 200,
+            crop: 'fill',
+            gravity: 'auto',
+            quality: 'auto',
+            fetch_format: 'auto',
+            secure: true,
+          });
+        }
+
+        return doc;
+      },
+    ],
+  },
 };
