@@ -41,27 +41,16 @@ export default {
     }
   ],
   hooks: {
-    afterChange: [
-      async ({ doc, req, operation }) => {
-        if (operation === 'create' && req.payload.tempCloudinaryPublicId && doc.id) {
-          try {
-            const updatedDoc = await req.payload.update({
-              collection: 'media',
-              id: doc.id,
-              data: {
-                cloudinary_public_id: req.payload.tempCloudinaryPublicId,
-              },
-              overrideAccess: true,
-            });
-            doc.cloudinary_public_id = updatedDoc.cloudinary_public_id;
-          } catch (error) {
-            req.payload.logger.error(`[Media afterChange] Error updating doc ID: ${doc.id}: ${error.message}`);
-          }
-          delete req.payload.tempCloudinaryPublicId;
-        }
-        return doc;
-      },
-    ],
+    beforeChange: [
+  async ({ data, req, operation }) => {
+    if (operation === 'create' && req.payload.tempCloudinaryPublicId) {
+      data.cloudinary_public_id = req.payload.tempCloudinaryPublicId;
+      delete req.payload.tempCloudinaryPublicId;
+    }
+    return data;
+  },
+],
+
 
     afterRead: [
   async ({ doc, req }) => {
