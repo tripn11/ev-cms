@@ -64,55 +64,63 @@ export default {
     ],
 
     afterRead: [
-      async ({ doc, req }) => {
-        const publicIdToUse = doc.cloudinary_public_id || doc.filename;
+  async ({ doc, req }) => {
+    // Fallback for older docs missing folder
+    const ensureFolder = (id) => {
+      // Replace 'media' with your folder name if different
+      if (!id.includes('/')) return `media/${id}`;
+      return id;
+    };
 
-        req.payload.logger.info(`[Media AfterRead] Public ID for URL generation: ${publicIdToUse}, MIME Type: ${doc.mimeType}`);
+    const publicIdToUse = ensureFolder(doc.cloudinary_public_id || doc.filename);
 
-        if (publicIdToUse) {
-          const isVideo = doc.mimeType?.startsWith('video');
-          const resourceType = isVideo ? 'video' : 'image';
+    req.payload.logger.info(`[Media AfterRead] Public ID for URL generation: ${publicIdToUse}, MIME Type: ${doc.mimeType}`);
 
-          try {
-            const generatedUrl = cloudinary.url(publicIdToUse, {
-              resource_type: resourceType,
-              secure: true,
-            });
-            doc.url = generatedUrl;
+    if (publicIdToUse) {
+      const isVideo = doc.mimeType?.startsWith('video');
+      const resourceType = isVideo ? 'video' : 'image';
 
-            if (resourceType === 'image') {
-                doc.thumbnailURL = cloudinary.url(publicIdToUse, {
-                    resource_type: 'image',
-                    secure: true,
-                    width: 200,
-                    height: 200,
-                    crop: 'fill',
-                    gravity: 'auto',
-                    quality: 'auto',
-                    fetch_format: 'auto'
-                });
-            } else if (resourceType === 'video') {
-                 doc.thumbnailURL = cloudinary.url(publicIdToUse, {
-                    resource_type: 'video',
-                    secure: true,
-                    format: 'jpg',
-                    width: 200,
-                    height: 200,
-                    crop: 'fill',
-                 });
-            }
-          } catch (e) {
-            req.payload.logger.error(`[Media AfterRead] Error generating Cloudinary URL for ${publicIdToUse}: ${e.message}`);
-            doc.url = null;
-            doc.thumbnailURL = null;
-          }
+      try {
+        doc.url = cloudinary.url(publicIdToUse, {
+          resource_type: resourceType,
+          secure: true,
+        });
+
+        if (resourceType === 'image') {
+          doc.thumbnailURL = cloudinary.url(publicIdToUse, {
+            resource_type: 'image',
+            secure: true,
+            width: 200,
+            height: 200,
+            crop: 'fill',
+            gravity: 'auto',
+            quality: 'auto',
+            fetch_format: 'auto',
+          });
         } else {
-          req.payload.logger.warn(`[Media AfterRead] No public_id or filename found for doc ID: ${doc.id}`);
-          doc.url = null;
-          doc.thumbnailURL = null;
+          doc.thumbnailURL = cloudinary.url(publicIdToUse, {
+            resource_type: 'video',
+            secure: true,
+            format: 'jpg',
+            width: 200,
+            height: 200,
+            crop: 'fill',
+          });
         }
-        return doc;
-      },
-    ],
+      } catch (e) {
+        req.payload.logger.error(`[Media AfterRead] Error generating Cloudinary URL for ${publicIdToUse}: ${e.message}`);
+        doc.url = null;
+        doc.thumbnailURL = null;
+      }
+    } else {
+      req.payload.logger.warn(`[Media AfterRead] No public_id or filename found for doc ID: ${doc.id}`);
+      doc.url = null;
+      doc.thumbnailURL = null;
+    }
+
+    return doc;
+  },
+],
+
   },
 };
