@@ -43,21 +43,6 @@ export default {
 
   // ✅ Save public_id before document is written
   hooks: {
-    beforeChange: [
-  async ({ data, req, operation }) => {
-    req.payload.logger.info(`[BeforeChange] Operation: ${operation}`);
-    if (operation === 'create' && req.payload.tempCloudinaryPublicId) {
-      req.payload.logger.info(`[BeforeChange] Setting cloudinary_public_id to ${req.payload.tempCloudinaryPublicId}`);
-      data.cloudinary_public_id = req.payload.tempCloudinaryPublicId;
-      delete req.payload.tempCloudinaryPublicId;
-    } else {
-      req.payload.logger.warn(`[BeforeChange] No tempCloudinaryPublicId found.`);
-    }
-    return data;
-  },
-],
-
-
     afterRead: [
       async ({ doc, req }) => {
         const publicIdToUse = doc.cloudinary_public_id || doc.filename;

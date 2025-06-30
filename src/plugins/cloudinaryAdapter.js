@@ -51,7 +51,7 @@ const cloudinaryAdapter = (args) => {
         uploadStream.end(file.buffer);
       });
 
-      req.payload.tempCloudinaryPublicId = uploadResult.public_id;
+      file.cloudinary_public_id = uploadResult.public_id;
       req.payload.logger.info(`[Adapter] Setting tempCloudinaryPublicId: ${uploadResult.public_id}`);
       file.filename = path.parse(file.filename).base;
 
