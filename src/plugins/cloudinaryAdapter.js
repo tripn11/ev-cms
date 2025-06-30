@@ -51,40 +51,47 @@ const cloudinaryAdapter = (args) => {
         uploadStream.end(file.buffer);
       });
 
-      file.cloudinary_public_id = uploadResult.public_id;
-      req.payload.logger.info(`[Adapter] Setting tempCloudinaryPublicId: ${uploadResult.public_id}`);
-      file.filename = path.parse(file.filename).base;
+      const cloudinaryPublicId = uploadResult.public_id;
 
+      req.payload.logger.info(`[Adapter] Setting cloudinary_public_id: ${cloudinaryPublicId}`);
+
+      file.filename = path.parse(file.filename).base;
       file.mimeType = uploadResult.format ? `${resourceType}/${uploadResult.format}` : file.mimeType;
       file.filesize = uploadResult.bytes;
       file.width = uploadResult.width;
       file.height = uploadResult.height;
+
+      // ✅ THIS LINE IS THE FIX
+      return {
+        ...file,
+        cloudinary_public_id: cloudinaryPublicId,
+      };
     },
 
     handleDelete: async ({ filename, collection, req, doc }) => {
-        const publicIdToDelete = doc?.cloudinary_public_id || filename;
-        if (!publicIdToDelete) return;
+      const publicIdToDelete = doc?.cloudinary_public_id || filename;
+      if (!publicIdToDelete) return;
 
-        try {
-            const fileExtension = path.extname(publicIdToDelete).toLowerCase();
-            const isVideo = ['.mp4', '.webm', '.mov', '.avi', '.ogg', '.ogv', '.wmv', '.flv', '.mkv'].includes(fileExtension) || publicIdToDelete.includes('/video/');
-            const resourceType = isVideo ? 'video' : 'image';
-            await cloudinary.uploader.destroy(publicIdToDelete, { resource_type: resourceType });
-            req.payload.logger.info(`[Cloudinary Delete Success] for ${publicIdToDelete}`);
-        } catch (error) {
-            req.payload.logger.error(`[Cloudinary Delete Error] for ${publicIdToDelete}: ${error.message}`);
-        }
+      try {
+        const fileExtension = path.extname(publicIdToDelete).toLowerCase();
+        const isVideo = ['.mp4', '.webm', '.mov', '.avi', '.ogg', '.ogv', '.wmv', '.flv', '.mkv'].includes(fileExtension) || publicIdToDelete.includes('/video/');
+        const resourceType = isVideo ? 'video' : 'image';
+        await cloudinary.uploader.destroy(publicIdToDelete, { resource_type: resourceType });
+        req.payload.logger.info(`[Cloudinary Delete Success] for ${publicIdToDelete}`);
+      } catch (error) {
+        req.payload.logger.error(`[Cloudinary Delete Error] for ${publicIdToDelete}: ${error.message}`);
+      }
     },
 
     generateFileURL: ({ filename, collection, doc }) => {
-        const publicIdForUrl = doc?.cloudinary_public_id || filename;
-        if (!publicIdForUrl) return null;
+      const publicIdForUrl = doc?.cloudinary_public_id || filename;
+      if (!publicIdForUrl) return null;
 
-        const fileExtension = path.extname(publicIdForUrl).toLowerCase();
-        const isVideo = ['.mp4', '.webm', '.mov', '.avi'].includes(fileExtension) || publicIdForUrl.includes('/video/');
-        const resourceType = isVideo ? 'video' : 'image';
+      const fileExtension = path.extname(publicIdForUrl).toLowerCase();
+      const isVideo = ['.mp4', '.webm', '.mov', '.avi'].includes(fileExtension) || publicIdForUrl.includes('/video/');
+      const resourceType = isVideo ? 'video' : 'image';
 
-        return cloudinary.url(publicIdForUrl, { resource_type: resourceType, secure: true });
+      return cloudinary.url(publicIdForUrl, { resource_type: resourceType, secure: true });
     },
 
     staticHandler: (req, res, next) => {
