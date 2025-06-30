@@ -8,10 +8,10 @@ cloudinary.config({
 });
 
 export default {
-  
   slug: 'media',
   upload: {
     mimeTypes: ['image/*', 'video/*', 'application/pdf'],
+    disableLocalStorage: true, // ✅ disables /api/media/file/*
   },
   access: {
     read: () => true,
@@ -42,5 +42,4 @@ export default {
       required: true,
     },
   ],
-}
-
+};
