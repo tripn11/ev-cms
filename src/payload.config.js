@@ -36,5 +36,5 @@ export default buildConfig({
       },
     }),
   ],
-  cors: ['http://localhost:5173', 'https://ev-cms.onrender.com'],
+  cors: ['http://localhost:5173', 'https://enerplazevs.com'],
 });
