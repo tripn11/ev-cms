@@ -1,18 +1,11 @@
+import cloudinaryAdapter from '../adapters/cloudinaryAdapter';
 import { v2 as cloudinary } from 'cloudinary';
-import cloudinaryAdapter from '../plugins/cloudinaryAdapter.js'; // adjust path
-
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-  secure: true,
-});
 
 export default {
   slug: 'media',
   upload: {
-    mimeTypes: ['image/*', 'video/*', 'application/pdf'],
-    adapter: cloudinaryAdapter({ prefix: 'payload-uploads' }), // ✅ KEY LINE
+    mimeTypes: ['image/*', 'video/*'],
+    adapter: cloudinaryAdapter({ prefix: 'payload-uploads' }),
   },
   access: {
     read: () => true,
@@ -21,7 +14,10 @@ export default {
     {
       name: 'cloudinary_public_id',
       type: 'text',
-      admin: { readOnly: true, position: 'sidebar' },
+      admin: {
+        readOnly: true,
+        position: 'sidebar',
+      },
     },
     {
       name: 'url',
@@ -42,14 +38,12 @@ export default {
   hooks: {
     afterRead: [
       async ({ doc }) => {
-        const publicId = doc.cloudinary_public_id || doc.filename;
-        if (!publicId) return doc;
-
+        // fallback if not set
+        const publicId = doc.cloudinary_public_id || `${doc.prefix}/${doc.filename}`;
         const isVideo = doc.mimeType?.startsWith('video');
-        const resourceType = isVideo ? 'video' : 'image';
 
         doc.url = cloudinary.url(publicId, {
-          resource_type: resourceType,
+          resource_type: isVideo ? 'video' : 'image',
           secure: true,
         });
 
@@ -60,8 +54,8 @@ export default {
             height: 200,
             crop: 'fill',
             gravity: 'auto',
-            quality: 'auto',
             fetch_format: 'auto',
+            quality: 'auto',
             secure: true,
           });
         }
