@@ -49,8 +49,8 @@ export default {
         if (!isVideo) {
           doc.thumbnailURL = cloudinary.url(publicId, {
             resource_type: 'image',
-            width: 200,
-            height: 200,
+            width: 400,
+            height: 400,
             crop: 'fill',
             gravity: 'auto',
             fetch_format: 'auto',
@@ -58,7 +58,6 @@ export default {
             secure: true,
           });
         }
-
         return doc;
       },
     ],
