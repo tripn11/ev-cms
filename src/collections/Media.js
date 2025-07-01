@@ -38,7 +38,6 @@ export default {
   hooks: {
     afterRead: [
       async ({ doc }) => {
-        // fallback if not set
         const publicId = doc.cloudinary_public_id || `${doc.prefix}/${doc.filename}`;
         const isVideo = doc.mimeType?.startsWith('video');
 

@@ -61,7 +61,6 @@ const cloudinaryAdapter = (args) => {
       file.width = uploadResult.width;
       file.height = uploadResult.height;
 
-      // ✅ THIS LINE IS THE FIX
       return {
         ...file,
         cloudinary_public_id: cloudinaryPublicId,
