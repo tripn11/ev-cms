@@ -54,7 +54,7 @@ export default {
             crop: 'fill',
             gravity: 'auto',
             fetch_format: 'auto',
-            quality: 'auto',
+            quality: '100',
             secure: true,
           });
         }
