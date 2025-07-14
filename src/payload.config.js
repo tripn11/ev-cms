@@ -13,7 +13,7 @@ import Vehicles from './collections/Vehicles.js';
 import cloudinaryAdapter from './plugins/cloudinaryAdapter.js';
 
 export default buildConfig({
-  serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL || 'http://localhost:3000',
+  serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL || 'http://localhost:3001',
   admin: {
     user: Users.slug,
     meta: { titleSuffix: ' | Enerplaz EVs' },

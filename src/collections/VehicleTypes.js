@@ -11,6 +11,11 @@ export default {
       name: 'name',
       type: 'text',
       required: true,
+      hooks: {
+        beforeChange: [
+          ({ value }) => value?.toLowerCase(),
+        ],
+      },
     },
   ],
 };

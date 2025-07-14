@@ -43,6 +43,7 @@ export default {
 
         doc.url = cloudinary.url(publicId, {
           resource_type: isVideo ? 'video' : 'image',
+          fetch_format: 'auto',
           secure: true,
         });
 
@@ -50,7 +51,7 @@ export default {
           doc.thumbnailURL = cloudinary.url(publicId, {
             resource_type: 'image',
             width: 400,
-            height: 400,
+            height: 500,
             crop: 'fill',
             gravity: 'auto',
             fetch_format: 'auto',
