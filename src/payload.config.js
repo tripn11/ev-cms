@@ -36,5 +36,5 @@ export default buildConfig({
       },
     }),
   ],
-  cors: ['http://localhost:5173', 'https://enerplazevs.com'],
+  cors: ['http://localhost:3000', 'https://enerplazevs.com', 'https://naijaevs.com'],
 });
